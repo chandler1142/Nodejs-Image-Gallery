@@ -56,8 +56,10 @@ function upload(canvas) {
             file_name: f_name
         }
         
-    }).done(function( data ) {
-        console.log(data);
+    }).done(function(predictions) {
+        console.log(predictions);
+        var p = JSON.parse(predictions);
+        renderPredictions(predictions, canvas, context, video);
     });                       
 }
 
@@ -70,4 +72,48 @@ function dataURLtoFile(dataurl, filename) {
         u8arr[n] = bstr.charCodeAt(n);
     }
     return new File([u8arr], filename, {type:mime});
+}
+
+function renderPredictions(predictions, canvas, context, mediasource) {
+
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    canvas.width = mediasource.width;
+    canvas.height = mediasource.height;
+    // console.log("render", mediasource.width, mediasource.height)
+
+    context.save();
+    if (this.modelParams.flipHorizontal) {
+      context.scale(-1, 1);
+      context.translate(-mediasource.width, 0);
+    }
+    //draw canvas
+    context.drawImage(mediasource, 0, 0, mediasource.width, mediasource.height);
+    context.restore();
+    context.font = '10px Arial';
+
+    // console.log('number of detections: ', predictions.length);
+    for (let i = 0; i < predictions.length; i++) {
+      context.beginPath();
+      context.fillStyle = "rgba(255, 255, 255, 0.6)";
+      context.fillRect(predictions[i].bbox[0], predictions[i].bbox[1] - 17, predictions[i].bbox[2], 17)
+      context.rect(...predictions[i].bbox);
+
+      // draw a dot at the center of bounding box
+
+
+      context.lineWidth = 1;
+      context.strokeStyle = '#0063FF';
+      context.fillStyle = "#0063FF" // "rgba(244,247,251,1)";
+      context.fillRect(predictions[i].bbox[0] + (predictions[i].bbox[2] / 2), predictions[i].bbox[1] + (predictions[i].bbox[3] / 2), 5, 5)
+
+      context.stroke();
+      context.fillText(
+        predictions[i].score.toFixed(3) + ' ' + " | hand",
+        predictions[i].bbox[0] + 5,
+        predictions[i].bbox[1] > 10 ? predictions[i].bbox[1] - 5 : 10);
+    }
+
+    // Write FPS to top left
+    context.font = "bold 12px Arial"
+    context.fillText("[FPS]: " + this.fps, 10, 20)
 }

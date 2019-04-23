@@ -27,7 +27,7 @@ module.exports = function (app) {
 				var file_name = req.body.file_name + ".jpeg";
 				var target_path = path.join('public', 'upload', file_name);
 				var bitmap = new Buffer(req.body.imgData, 'base64');
-    				// write buffer to file
+				// write buffer to file
  				//fs.writeFileSync(target_path, bitmap);
 				fs.writeFile(target_path, bitmap);
 				//specific the upload to path
@@ -64,8 +64,6 @@ module.exports = function (app) {
 				res.download(f);
 		});
 
-
-
 		app.post('/uploadImage', function(req, res) {
 			var d = domain.create();
 			d.on('error', console.error);
@@ -80,7 +78,7 @@ module.exports = function (app) {
 
 					console.log('Saved: ' + file_name);
 					var predictions = handmodel.detect(target_path + "/" + file_name);
-					res.send('predictions: ' + predictions);
+					res.send(predictions);
 
 				});
 			});
