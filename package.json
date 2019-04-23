@@ -3,10 +3,13 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-  "start": "node app.js"
+    "start": "node app.js"
   },
   "dependencies": {
+    "@tensorflow-models/mobilenet": "^1.0.0",
+    "@tensorflow/tfjs": "^1.1.0",
+    "ejs": "*",
     "express": "3.2.6",
-    "ejs": "*"
+    "node-fetch": "^2.3.0"
   }
 }

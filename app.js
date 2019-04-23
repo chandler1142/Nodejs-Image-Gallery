@@ -3,6 +3,10 @@ var express = require('express');
 var fs = require('fs');
 var path = require('path');
 var routes = require('./routes');
+var handtrack = require('./lib/handtrack.min.js')
+const mobilenet = require('@tensorflow-models/mobilenet')
+global.fetch = require('node-fetch')
+const model = mobilenet.load()
 
 var app = express();
 
@@ -14,6 +18,12 @@ app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.bodyParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+const params = {
+	weightPath: path.join(__dirname, 'resources\\ssdlitemobilenetv2\\weights_manifest.json'),
+	modelPath: path.join(__dirname, 'resources\\ssdlitemobilenetv2\\tensorflowjs_model.pb')
+}
+handtrack.load(params);
 
 // 开发模式
 if ('development' == app.get('env')) {

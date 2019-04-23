@@ -8,6 +8,10 @@ module.exports = function (app) {
 				res.render('index');
 		});
 
+		app.get('/redpack', function(req, res, next) {
+				res.render('redpack');
+		});
+
 		app.get('/upload', function(req, res, next) {
 				res.render('upload');
 		});
