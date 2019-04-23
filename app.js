@@ -8,7 +8,10 @@ const mobilenet = require('@tensorflow-models/mobilenet')
 global.fetch = require('node-fetch')
 const model = mobilenet.load()
 
+var mutipart= require('connect-multiparty');
+
 var app = express();
+
 
 //环境变量
 app.set('port', process.env.PORT || 8081);
@@ -18,6 +21,8 @@ app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.bodyParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(mutipart({uploadDir:path.join(__dirname, 'upload')}));
 
 const params = {
 	weightPath: path.join(__dirname, 'resources\\ssdlitemobilenetv2\\weights_manifest.json'),

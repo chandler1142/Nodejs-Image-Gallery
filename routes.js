@@ -3,6 +3,10 @@ var path = require('path');
 var file_read = require('./list_files');
 var domain = require('domain');
 
+var mutipart= require('connect-multiparty');
+var mutipartMiddeware = mutipart();
+
+ 
 module.exports = function (app) {
 		app.get('/', function(req, res, next) {
 				res.render('index');
@@ -58,6 +62,30 @@ module.exports = function (app) {
 				var f = target_file;
 				f = path.resolve(f);
 				res.download(f);
+		});
+
+
+
+		app.post('/uploadImage', function(req, res) {
+			var d = domain.create();
+			d.on('error', console.error);
+			d.run(function() {
+				var file_name = req.body.file_name + ".jpeg";
+				var target_path = path.join('public', 'upload', file_name);
+				var bitmap = new Buffer(req.body.imgData, 'base64');
+    				// write buffer to file
+ 				//fs.writeFileSync(target_path, bitmap);
+				fs.writeFile(target_path, bitmap, function(err) {
+					if(err) {
+						throw err;
+					}
+
+					console.log('Saved: ' + file_name);
+
+					res.send('Image uploaded to: ' + target_path);
+
+				});
+			});
 		});
 
 }
