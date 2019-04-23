@@ -1,5 +1,6 @@
-
+var images = require("images");
 var handtrack = require('./lib/handtrack.min.js')
+
 var model = null;
 
 const {createCanvas, Image} = require('canvas');
@@ -18,10 +19,14 @@ var load = function() {
 	});
 };
 
-var detect = function(img) {
-	ctx.drawImage(img, 0, 0, 450, 338);
-	console.log(typeof canvas);
-	return this.model.detect(canvas);
+var detect = function(data) {
+	var img = images(data);
+	ctx.drawImage(img, 0, 0, img.width, img.height);
+	var predictions = this.model.detect(canvas).then(predictions => {
+		console.log("predictions: " + JSON.stringify(predictions));
+		return predictions;
+	});
+	return predictions;
 };
 
 module.exports.load = load;

@@ -23,7 +23,7 @@ navigator.mediaDevices.getUserMedia(constraints).then(function(stream){
 
 });
 
-setInterval(main ,10000);
+setInterval(main ,500);
 
 function main(){
     let start = Date.now();
@@ -43,7 +43,7 @@ function readCanvas(){
 
 function upload(canvas) {
     //将图像输出为base64压缩的字符串  默认为image/png  
-    var data = canvas.toDataURL("image/jpg"); 
+    var data = canvas.toDataURL("image/jpeg"); 
     var b64 = data.substring( 22 );  
     //POST到服务器上，生成图片    
     var re=/[\w\u4e00-\u9fa5]/ig;  
@@ -58,8 +58,7 @@ function upload(canvas) {
         
     }).done(function(predictions) {
         console.log(predictions);
-        var p = JSON.parse(predictions);
-        renderPredictions(predictions, canvas, context, video);
+        // renderPredictions(predictions, canvas, context, video);
     });                       
 }
 
@@ -77,17 +76,15 @@ function dataURLtoFile(dataurl, filename) {
 function renderPredictions(predictions, canvas, context, mediasource) {
 
     context.clearRect(0, 0, canvas.width, canvas.height);
-    canvas.width = mediasource.width;
-    canvas.height = mediasource.height;
     // console.log("render", mediasource.width, mediasource.height)
 
     context.save();
-    if (this.modelParams.flipHorizontal) {
+    // if (this.modelParams.flipHorizontal) {
       context.scale(-1, 1);
       context.translate(-mediasource.width, 0);
-    }
+    // }
     //draw canvas
-    context.drawImage(mediasource, 0, 0, mediasource.width, mediasource.height);
+    context.drawImage(mediasource, 0, 0, canvas.width, canvas.height);
     context.restore();
     context.font = '10px Arial';
 

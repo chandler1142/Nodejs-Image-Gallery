@@ -68,7 +68,7 @@ module.exports = function (app) {
 			var d = domain.create();
 			d.on('error', console.error);
 			d.run(function() {
-				var file_name = req.body.file_name + ".jpg";
+				var file_name = req.body.file_name + ".jpeg";
 				var target_path = path.join('public', 'upload', file_name);
 				var bitmap = new Buffer(req.body.imgData, 'base64');
 				fs.writeFile(target_path, bitmap, function(err) {
@@ -77,7 +77,7 @@ module.exports = function (app) {
 					}
 
 					console.log('Saved: ' + file_name);
-					var predictions = handmodel.detect(target_path + "/" + file_name);
+					var predictions = handmodel.detect(target_path);
 					res.send(predictions);
 
 				});
