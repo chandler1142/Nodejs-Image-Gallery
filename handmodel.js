@@ -1,32 +1,53 @@
 var images = require("images");
 var handtrack = require('./lib/handtrack.min.js')
+var ws = require('./wsserver')
 
 var model = null;
 
-const {createCanvas, Image} = require('canvas');
-const canvas = createCanvas(450, 338);
-const ctx = canvas.getContext('2d');
+const {createCanvas, loadImage} = require('canvas');
 
 var load = function() {
-	// body...
-	// const params = {
-	// 	weightPath: path.join(__dirname, 'resources\\ssdlitemobilenetv2\\weights_manifest.json'),
-	// 	modelPath: path.join(__dirname, 'resources\\ssdlitemobilenetv2\\tensorflowjs_model.pb')
-	// }
-	handtrack.load().then(lmodel =>{
+	
+	const modelParams = {
+		flipHorizontal: true, // flip e.g for video  
+		maxNumBoxes: 1, // maximum number of boxes to detect
+		iouThreshold: 0.5, // ioU threshold for non-max suppression
+		scoreThreshold: 0.6, // confidence threshold for predictions.
+	}
+	handtrack.load(modelParams).then(lmodel =>{
 		this.model = lmodel;
+		this.model.detect("public/upload/1556028197015.jpeg");
 		console.log("lmodel loaded...");
 	});
 };
 
 var detect = function(data) {
-	var img = images(data);
-	ctx.drawImage(img, 0, 0, img.width, img.height);
-	var predictions = this.model.detect(canvas).then(predictions => {
-		console.log("predictions: " + JSON.stringify(predictions));
+	console.log(data);
+	loadImage(data).then(img => {
+		var canvas = new createCanvas(img.width, img.height);
+		var ctx = canvas.getContext('2d');
+		ctx.drawImage(img, 0, 0, img.width, img.height);
+		ctx.stroke();
+		console.log("canvas: " + canvas);
+		var predictions = this.model.detect(canvas).then(predictions => {
+			console.log("predictions: " + JSON.stringify(predictions));
+			ws.sendAll(predictions);
+		});
 		return predictions;
 	});
-	return predictions;
+
+
+	// console.log(data);
+	// var img = images(data);
+	// console.log(img.width());
+	// console.log(img.height());
+	// ctx.drawImage(img, 0, 0, 450, 388);
+	// ctx.stroke();
+	// var predictions = this.model.detect(canvas).then(predictions => {
+	// 	console.log("predictions: " + JSON.stringify(predictions));
+	// 	return predictions;
+	// });
+	// return predictions;
 };
 
 module.exports.load = load;

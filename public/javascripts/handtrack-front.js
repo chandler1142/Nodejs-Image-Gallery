@@ -2,14 +2,20 @@
 var video = document.querySelector('video');
 var canvas = document.querySelector('canvas');
 var context=canvas.getContext('2d');
-var url = "ws://localhost:8080/wsServer";
+var url = "ws://localhost:8082";
 
-// var socket = new WebSocket(url);
+var socket = new WebSocket(url);
 
-// socket.onopen=onOpen;
-// function onOpen(event){
+socket.onopen=onOpen;
+function onOpen(event){
+    console.log("open connection")
+}
 
-// }
+socket.onmessage = function(message) {
+    console.log("message: "  + message);
+    //目前只有predictions
+    renderPredictions(message, canvas, context, video);
+}
 
 var constraints={
         video:true,
@@ -47,7 +53,7 @@ function upload(canvas) {
     var b64 = data.substring( 22 );  
     //POST到服务器上，生成图片    
     var re=/[\w\u4e00-\u9fa5]/ig;  
-    var f_name = 'test';
+    var f_name = Date.now();
     $.ajax({
         type: 'POST',
         url: '/uploadImage',
@@ -58,7 +64,6 @@ function upload(canvas) {
         
     }).done(function(predictions) {
         console.log(predictions);
-        // renderPredictions(predictions, canvas, context, video);
     });                       
 }
 

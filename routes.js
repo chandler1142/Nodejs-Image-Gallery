@@ -77,8 +77,8 @@ module.exports = function (app) {
 					}
 
 					console.log('Saved: ' + file_name);
-					var predictions = handmodel.detect(target_path);
-					res.send(predictions);
+					handmodel.detect(target_path);
+					res.send("success");
 
 				});
 			});

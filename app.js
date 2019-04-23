@@ -13,7 +13,7 @@ var mutipart= require('connect-multiparty');
 
 var app = express();
 
-//环境变量
+//锟斤拷锟斤拷锟斤拷锟斤拷
 app.set('port', process.env.PORT || 8081);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
@@ -26,18 +26,17 @@ app.use(mutipart({uploadDir:path.join(__dirname, 'upload')}));
 
 
 
-// 开发模式
+// 锟斤拷锟斤拷模式
 if ('development' == app.get('env')) {
 	app.use(express.errorHandler());
 }
 
-app.use(express.bodyParser({uploadDir:'./uploads'}));	//用来上传文件
+app.use(express.bodyParser({uploadDir:'./uploads'}));	//锟斤拷锟斤拷锟较达拷锟侥硷拷
 
 //routes
 routes(app);
 //handmodel
 handmodel.load();
-
 var server = http.createServer(app).listen(8081);
 
 console.log('serve listening in 8081');
