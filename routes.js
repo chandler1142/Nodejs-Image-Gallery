@@ -5,8 +5,8 @@ var domain = require('domain');
 
 var mutipart= require('connect-multiparty');
 var mutipartMiddeware = mutipart();
+var handmodel = require('./handmodel');
 
- 
 module.exports = function (app) {
 		app.get('/', function(req, res, next) {
 				res.render('index');
@@ -70,19 +70,17 @@ module.exports = function (app) {
 			var d = domain.create();
 			d.on('error', console.error);
 			d.run(function() {
-				var file_name = req.body.file_name + ".jpeg";
+				var file_name = req.body.file_name + ".jpg";
 				var target_path = path.join('public', 'upload', file_name);
 				var bitmap = new Buffer(req.body.imgData, 'base64');
-    				// write buffer to file
- 				//fs.writeFileSync(target_path, bitmap);
 				fs.writeFile(target_path, bitmap, function(err) {
 					if(err) {
 						throw err;
 					}
 
 					console.log('Saved: ' + file_name);
-
-					res.send('Image uploaded to: ' + target_path);
+					var predictions = handmodel.detect(target_path + "/" + file_name);
+					res.send('predictions: ' + predictions);
 
 				});
 			});

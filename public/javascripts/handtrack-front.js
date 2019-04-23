@@ -43,7 +43,7 @@ function readCanvas(){
 
 function upload(canvas) {
     //将图像输出为base64压缩的字符串  默认为image/png  
-    var data = canvas.toDataURL("image/png", 1); 
+    var data = canvas.toDataURL("image/jpg"); 
     var b64 = data.substring( 22 );  
     //POST到服务器上，生成图片    
     var re=/[\w\u4e00-\u9fa5]/ig;  

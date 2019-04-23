@@ -3,7 +3,8 @@ var express = require('express');
 var fs = require('fs');
 var path = require('path');
 var routes = require('./routes');
-var handtrack = require('./lib/handtrack.min.js')
+var handmodel = require('./handmodel');
+
 const mobilenet = require('@tensorflow-models/mobilenet')
 global.fetch = require('node-fetch')
 const model = mobilenet.load()
@@ -11,7 +12,6 @@ const model = mobilenet.load()
 var mutipart= require('connect-multiparty');
 
 var app = express();
-
 
 //环境变量
 app.set('port', process.env.PORT || 8081);
@@ -24,11 +24,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(mutipart({uploadDir:path.join(__dirname, 'upload')}));
 
-const params = {
-	weightPath: path.join(__dirname, 'resources\\ssdlitemobilenetv2\\weights_manifest.json'),
-	modelPath: path.join(__dirname, 'resources\\ssdlitemobilenetv2\\tensorflowjs_model.pb')
-}
-handtrack.load(params);
+
 
 // 开发模式
 if ('development' == app.get('env')) {
@@ -39,6 +35,8 @@ app.use(express.bodyParser({uploadDir:'./uploads'}));	//用来上传文件
 
 //routes
 routes(app);
+//handmodel
+handmodel.load();
 
 var server = http.createServer(app).listen(8081);
 
