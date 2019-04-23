@@ -3,7 +3,7 @@ var handtrack = require('./lib/handtrack.min.js')
 var model = null;
 
 const {createCanvas, Image} = require('canvas');
-const canvas = createCanvas(width, height);
+const canvas = createCanvas(450, 338);
 const ctx = canvas.getContext('2d');
 
 var load = function() {
@@ -19,8 +19,9 @@ var load = function() {
 };
 
 var detect = function(img) {
-	ctx.drawImage(img, 0, 0, width, height);
-	return this.model.detect(img);
+	ctx.drawImage(img, 0, 0, 450, 338);
+	console.log(typeof canvas);
+	return this.model.detect(canvas);
 };
 
 module.exports.load = load;

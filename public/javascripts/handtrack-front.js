@@ -23,7 +23,7 @@ navigator.mediaDevices.getUserMedia(constraints).then(function(stream){
 
 });
 
-setInterval(main ,1000);
+setInterval(main ,10000);
 
 function main(){
     let start = Date.now();
