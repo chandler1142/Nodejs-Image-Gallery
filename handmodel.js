@@ -16,19 +16,19 @@ var load = function() {
 	}
 	handtrack.load(modelParams).then(lmodel =>{
 		this.model = lmodel;
-		this.model.detect("public/upload/1556028197015.jpeg");
 		console.log("lmodel loaded...");
+		this.detect('public/upload/test/1556066948520.jpeg')
+		console.log("test done...")
 	});
 };
 
-var detect = function(data) {
+var detect = async function(data) {
 	console.log(data);
 	loadImage(data).then(img => {
 		var canvas = new createCanvas(img.width, img.height);
 		var ctx = canvas.getContext('2d');
 		ctx.drawImage(img, 0, 0, img.width, img.height);
 		ctx.stroke();
-		console.log("canvas: " + canvas);
 		var predictions = this.model.detect(canvas).then(predictions => {
 			console.log("predictions: " + JSON.stringify(predictions));
 			ws.sendAll(predictions);
