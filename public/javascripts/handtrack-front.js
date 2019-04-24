@@ -82,7 +82,6 @@ function dataURLtoFile(dataurl, filename) {
 function renderPredictions(predictions, canvas, context, mediasource) {
 
     context.clearRect(0, 0, canvas.width, canvas.height);
-    // console.log("render", mediasource.width, mediasource.height)
 
     context.save();
     // if (this.modelParams.flipHorizontal) {

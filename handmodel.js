@@ -33,7 +33,7 @@ var detect = function(data) {
 		this.model.detect(canvas).then(predictions => {
 			console.log("processed data : " + data);
 			console.log("predictions: " + JSON.stringify(predictions));
-			ws.sendAll(JSON.stringify(predictions));
+			ws.sendAll(JSON.stringify(predictions));	
 		});
 	});
 
