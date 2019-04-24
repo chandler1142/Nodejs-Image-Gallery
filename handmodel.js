@@ -22,18 +22,19 @@ var load = function() {
 	});
 };
 
-var detect = async function(data) {
-	console.log(data);
+var detect = function(data) {
+	console.log("start to handle data : " + data);
 	loadImage(data).then(img => {
+		console.log("processing data : " + data);
 		var canvas = new createCanvas(img.width, img.height);
 		var ctx = canvas.getContext('2d');
 		ctx.drawImage(img, 0, 0, img.width, img.height);
 		ctx.stroke();
-		var predictions = this.model.detect(canvas).then(predictions => {
+		this.model.detect(canvas).then(predictions => {
+			console.log("processed data : " + data);
 			console.log("predictions: " + JSON.stringify(predictions));
-			ws.sendAll(predictions);
+			ws.sendAll(JSON.stringify(predictions));
 		});
-		return predictions;
 	});
 
 

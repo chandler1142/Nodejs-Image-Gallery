@@ -78,10 +78,9 @@ module.exports = function (app) {
 
 					console.log('Saved: ' + file_name);
 					handmodel.detect(target_path);
-					res.send("success");
-
 				});
 			});
+			res.send("success");		
 		});
 
 }

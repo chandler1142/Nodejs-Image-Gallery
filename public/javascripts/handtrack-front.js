@@ -3,7 +3,7 @@ var video = document.querySelector('video');
 var canvas = document.querySelector('canvas');
 var context=canvas.getContext('2d');
 
-var url = "ws://192.168.0.118:8082";
+var url = "ws://192.168.50.158:8082";
 
 var socket = new WebSocket(url);
 
@@ -13,9 +13,12 @@ function onOpen(event){
 }
 
 socket.onmessage = function(message) {
-    console.log("message: "  + message);
+    console.log("message: "  + message.data);
     //目前只有predictions
-    renderPredictions(message, canvas, context, video);
+    if(message && message.data && message.data.length > 0) {
+        var predictions = JSON.parse(message.data);
+        renderPredictions(predictions, canvas, context, video);        
+    }
 }
 
 var constraints={
@@ -30,14 +33,11 @@ navigator.mediaDevices.getUserMedia(constraints).then(function(stream){
 
 });
 
-setInterval(main ,500);
+setInterval(main ,5000);
 
 function main(){
-    let start = Date.now();
     drawCanvas();
     readCanvas();
-    let end = Date.now();
-    console.log("upload cost: " + (end-start));
 }
 
 function drawCanvas(){

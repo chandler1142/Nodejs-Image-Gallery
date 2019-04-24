@@ -19,8 +19,9 @@ var server = ws.createServer(function(conn){
 
 
 var sendAll = function broadcast(str) {
+    console.log("sendAll: " + str);
     server.connections.forEach(function(connection) {
-        connection.sendText(str);
+        connection.send(str);
     })
 }
 
