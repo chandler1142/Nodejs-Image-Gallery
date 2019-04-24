@@ -1,4 +1,4 @@
-require('@tensorflow/tfjs-node');
+// require('@tensorflow/tfjs-node');
 
 var images = require("images");
 var handtrack = require('./lib/handtrack.min.js')

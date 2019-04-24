@@ -33,7 +33,7 @@ navigator.mediaDevices.getUserMedia(constraints).then(function(stream){
 
 });
 
-setInterval(main ,5000);
+setInterval(main ,500);
 
 function main(){
     drawCanvas();
