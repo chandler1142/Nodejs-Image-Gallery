@@ -17,7 +17,7 @@ var load = function() {
 	handtrack.load(modelParams).then(lmodel =>{
 		this.model = lmodel;
 		console.log("lmodel loaded...");
-		this.detect('public/upload/test/1556066948520.jpeg')
+		this.detect('public/test/1556066948520.jpeg')
 		console.log("test done...")
 	});
 };
