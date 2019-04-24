@@ -3,7 +3,7 @@ var video = document.querySelector('video');
 var canvas = document.querySelector('canvas');
 var context=canvas.getContext('2d');
 
-var url = "ws://192.168.50.158:8082";
+var url = "ws://localhost:8082";
 
 var socket = new WebSocket(url);
 
